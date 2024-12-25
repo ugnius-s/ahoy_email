@@ -25,7 +25,6 @@ module Ahoy
       end
 
       redirect_options = {}
-      redirect_options[:allow_other_host] = true
 
       if AhoyEmail::Utils.signature_verified?(legacy: legacy, token: token, campaign: campaign, url: url, signature: signature)
         data = {}
@@ -35,7 +34,7 @@ module Ahoy
         data[:controller] = self
         AhoyEmail::Utils.publish(:click, data)
 
-        redirect_to url, **redirect_options
+        redirect_to url, allow_other_host: true, **redirect_options
       else
         if AhoyEmail.invalid_redirect_url
           redirect_to AhoyEmail.invalid_redirect_url, **redirect_options
